@@ -124,4 +124,4 @@ Where `part_weight` is an estimated share of the vehicle's value that part repre
 
 ## Acknowledgments
 
-Built during an AI/ML internship at Singularis Software Technologies, under the guidance of Arathi M (Data Scientist).
+Built during an AI/ML internship at Singularis Software Technologies.
