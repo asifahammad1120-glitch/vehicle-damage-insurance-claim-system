@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up — Vehicle Claim System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0F172A;
+            --navy-light: #1E293B;
+            --amber: #F59E0B;
+            --bg: #F8FAFC;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            display: flex;
+        }
+        .brand-panel {
+            flex: 1;
+            background: linear-gradient(160deg, var(--navy) 0%, var(--navy-light) 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+        .brand-panel::before {
+            content: '';
+            position: absolute;
+            width: 500px; height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%);
+            top: -150px; right: -150px;
+        }
+        .brand-mark {
+            display: inline-flex; align-items: center; gap: 10px;
+            font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 20px;
+            margin-bottom: 48px;
+        }
+        .brand-mark-icon {
+            width: 36px; height: 36px; background: var(--amber); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-size: 18px;
+        }
+        .brand-panel h1 {
+            font-family: 'Poppins', sans-serif; font-size: 40px; line-height: 1.2;
+            font-weight: 600; max-width: 420px; margin-bottom: 20px;
+        }
+        .brand-panel p {
+            color: #94A3B8; font-size: 16px; max-width: 380px; line-height: 1.6; margin-bottom: 40px;
+        }
+        .feature-row { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; font-size: 14px; color: #CBD5E1; }
+        .feature-dot { width: 8px; height: 8px; background: var(--amber); border-radius: 50%; flex-shrink: 0; }
+        .form-panel {
+            flex: 1.15;
+            display: flex; align-items: center; justify-content: center;
+            padding: 40px; overflow-y: auto;
+        }
+        .form-card { width: 100%; max-width: 380px; padding: 40px 0; }
+        .form-card h2 {
+            font-family: 'Poppins', sans-serif; font-size: 28px; font-weight: 600;
+            color: var(--navy); margin-bottom: 8px;
+        }
+        .form-card .subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
+        .field { margin-bottom: 18px; }
+        .field label { display: block; font-size: 13px; font-weight: 500; color: var(--navy-light); margin-bottom: 6px; }
+        .field input {
+            width: 100%; padding: 12px 14px; border: 1.5px solid var(--border);
+            border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 14px;
+            transition: border-color 0.15s;
+        }
+        .field input:focus { outline: none; border-color: var(--amber); }
+        .field .helptext { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+        .btn-primary {
+            width: 100%; padding: 13px; background: var(--navy); color: white; border: none;
+            border-radius: 8px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 15px;
+            cursor: pointer; transition: background 0.15s; margin-top: 8px;
+        }
+        .btn-primary:hover { background: var(--navy-light); }
+        .login-link { text-align: center; margin-top: 24px; font-size: 14px; color: var(--text-muted); }
+        .login-link a { color: var(--amber); font-weight: 600; text-decoration: none; }
+        .login-link a:hover { text-decoration: underline; }
+        .errorlist { list-style: none; color: #DC2626; font-size: 13px; margin-top: 4px; }
+        @media (max-width: 860px) { .brand-panel { display: none; } }
+    </style>
+</head>
+<body>
+    <div class="brand-panel">
+        <div class="brand-mark"><span class="brand-mark-icon">🚗</span> Vehicle Claim System</div>
+        <h1>Create your account in seconds.</h1>
+        <p>Sign up to submit accident claims and track their status with AI-backed damage reports.</p>
+        <div class="feature-row"><span class="feature-dot"></span> Free to register</div>
+        <div class="feature-row"><span class="feature-dot"></span> Instant AI damage analysis</div>
+        <div class="feature-row"><span class="feature-dot"></span> Downloadable claim reports</div>
+    </div>
+
+    <div class="form-panel">
+        <div class="form-card">
+            <h2>Create account</h2>
+            <p class="subtitle">Join to start submitting claims.</p>
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="field">
+                    <label>{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}<div class="helptext">{{ field.help_text }}</div>{% endif %}
+                    {% if field.errors %}<ul class="errorlist">{{ field.errors }}</ul>{% endif %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn-primary">Sign Up</button>
+            </form>
+            <p class="login-link">Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+        </div>
+    </div>
+</body>
+</html>

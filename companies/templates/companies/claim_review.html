@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Review Claim #{{ claim.id }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Claim #{{ claim.id }} — {{ claim.vehicle_number }}</h1>
+    {% if claim.status == "approved" %}
+    <span class="badge bg-success fs-6">Approved</span>
+    {% elif claim.status == "rejected" %}
+    <span class="badge bg-danger fs-6">Rejected</span>
+    {% else %}
+    <span class="badge bg-secondary fs-6">Pending</span>
+    {% endif %}
+</div>
+
+<p><strong>Vehicle:</strong> {{ claim.vehicle_details }}</p>
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Uploaded Image</h4>
+        <img src="{{ claim.accident_image.url }}" class="img-fluid rounded border">
+    </div>
+
+    <div class="col-md-6">
+        <h4>Detected Damage</h4>
+        <table class="table table-sm table-bordered">
+    <thead>
+        <tr><th>Part</th><th>Severity</th><th>Confidence</th><th>Amount</th></tr>
+    </thead>
+    <tbody>
+        {% for d in detections %}
+        <tr>
+            <td class="text-capitalize">{{ d.part_name }}</td>
+            <td>
+                {% if d.severity == "major" %}
+                <span class="badge bg-danger">Major</span>
+                {% elif d.severity == "moderate" %}
+                <span class="badge bg-warning text-dark">Moderate</span>
+                {% elif d.severity == "minor" %}
+                <span class="badge bg-info text-dark">Minor</span>
+                {% else %}
+                <span class="badge bg-secondary">No Damage</span>
+                {% endif %}
+            </td>
+            <td>{{ d.severity_confidence|floatformat:2 }}</td>
+            <td>Rs. {{ d.amount|floatformat:2 }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+        {% if report %}
+        <div class="alert alert-primary">
+            <h5 class="mb-0">Estimated Claim Amount: Rs. {{ report.claim_amount }}</h5>
+        </div>
+        {% endif %}
+
+        {% if claim.status == "pending" %}
+        <form method="post" class="d-flex gap-2 mt-3">
+            {% csrf_token %}
+            <button type="submit" name="action" value="approve" class="btn btn-success">Approve</button>
+            <button type="submit" name="action" value="reject" class="btn btn-danger">Reject</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

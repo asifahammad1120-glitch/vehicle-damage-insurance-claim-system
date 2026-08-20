@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Manage Companies{% endblock %}
+
+{% block content %}
+<h1>Pending Companies</h1>
+{% if pending %}
+<table class="table table-striped">
+    <thead>
+        <tr><th>Company</th><th>City</th><th>License</th><th></th></tr>
+    </thead>
+    <tbody>
+        {% for c in pending %}
+        <tr>
+            <td>{{ c.company_name }}</td>
+            <td>{{ c.city }}</td>
+            <td>{{ c.license_number }}</td>
+            <td>
+                <a href="{% url 'approve_company' c.id %}" class="btn btn-sm btn-success">Approve</a>
+                <a href="{% url 'reject_company' c.id %}" class="btn btn-sm btn-danger">Reject</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="text-muted">No pending companies.</p>
+{% endif %}
+
+<h1 class="mt-5">Approved Companies</h1>
+{% if approved %}
+<table class="table table-striped">
+    <thead><tr><th>Company</th><th>City</th></tr></thead>
+    <tbody>
+        {% for c in approved %}
+        <tr><td>{{ c.company_name }}</td><td>{{ c.city }}</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="text-muted">No approved companies yet.</p>
+{% endif %}
+{% endblock %}

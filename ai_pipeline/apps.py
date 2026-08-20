@@ -1,0 +1,10 @@
+from django.apps import AppConfig
+
+
+class AiPipelineConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'ai_pipeline'
+
+    def ready(self):
+        from .inference import load_models
+        load_models()

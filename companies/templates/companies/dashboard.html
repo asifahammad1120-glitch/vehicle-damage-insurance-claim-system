@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{{ company.company_name }} Dashboard{% endblock %}
+
+{% block content %}
+<h1>{{ company.company_name }} — Claim Requests</h1>
+
+{% if claims %}
+<table class="table table-striped">
+    <thead>
+        <tr><th>Claim #</th><th>Vehicle Number</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+        {% for claim in claims %}
+        <tr>
+            <td><a href="{% url 'company_claim_review' claim.id %}">Claim #{{ claim.id }}</a></td>
+            <td>{{ claim.vehicle_number }}</td>
+            <td>
+                {% if claim.status == "approved" %}
+                <span class="badge bg-success">Approved</span>
+                {% elif claim.status == "rejected" %}
+                <span class="badge bg-danger">Rejected</span>
+                {% else %}
+                <span class="badge bg-secondary">Pending</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="text-muted">No claims yet.</p>
+{% endif %}
+{% endblock %}

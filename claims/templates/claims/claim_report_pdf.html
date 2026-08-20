@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    body { font-family: Helvetica, sans-serif; font-size: 12px; }
+    h1 { font-size: 18px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    td, th { border: 1px solid #999; padding: 6px; text-align: left; }
+</style>
+</head>
+<body>
+    <h1>Insurance Claim Report — Claim #{{ claim.id }}</h1>
+    <p><strong>Vehicle Number:</strong> {{ claim.vehicle_number }}</p>
+    <p><strong>Vehicle:</strong> {{ claim.vehicle_details }}</p>
+    <p><strong>Accident Date:</strong> {{ claim.accident_date }}</p>
+    <p><strong>Status:</strong> {{ claim.status }}</p>
+
+    <h2>Detected Damage</h2>
+    <table>
+    <tr><th>Part</th><th>Severity</th><th>Confidence</th><th>Amount</th></tr>
+    {% for d in detections %}
+    <tr>
+        <td>{{ d.part_name }}</td>
+        <td>{{ d.severity }}</td>
+        <td>{{ d.severity_confidence|floatformat:2 }}</td>
+        <td>Rs. {{ d.amount|floatformat:2 }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+
+    {% if report %}
+    <h2>Estimated Claim Amount: Rs.{{ report.claim_amount|floatformat:2 }}</h2>
+    {% endif %}
+</body>
+</html>
